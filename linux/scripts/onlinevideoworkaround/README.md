@@ -52,9 +52,16 @@ How long each "snippet" of the streamed video will be in seconds, defaults to 30
 
 ```./onlinevideoworkaround.sh -l 15```
 
-Using all three of them together:
+An example of using all three together:
 
 ```./onlinevideoworkaround.sh -p /home/USER/.steam/steam/steamapps/compatdata/4294897876/pfx/drive_c/users/steamuser/AppData/Local/VotV/Assets/tv/ -o https://www.youtube.com/watch?v=9Pd3qYrrF-A -l 60```
+
+### -h
+Displays all the basic arg infomation, incase you need a refresher and don't want to come back here, example usage:
+
+```./onlinevideoworkaround.sh -h```
+
+### Advanced Args
 
 ### -s
 Skips the 'Press any key to continue...' prompt, this means you need to be fast to select the stream, also may slightly mess up timing, example usage:
@@ -62,11 +69,11 @@ Skips the 'Press any key to continue...' prompt, this means you need to be fast 
 ```./onlinevideoworkaround.sh -s```
 
 ### -f
-Downloads the full video instead of chopping it up into snippets, better used with youtube videos then actual streams, example usage:
+Downloads the full video instead of chopping it up into snippets, better used with youtube videos and doubly so for youtube playlists then actual streams, example usage:
 
 ```./onlinevideoworkaround.sh -f```
 
 ### -n
-Experimental arg to treat normal online video links like a youtube link for cases, not tested, example usage:
+Experimental arg to treat normal online video links like a youtube link for cases where it's not live, not tested, example usage:
 
 ```./onlinevideoworkaround.sh -n```
