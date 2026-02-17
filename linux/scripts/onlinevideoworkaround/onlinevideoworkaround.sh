@@ -5,8 +5,9 @@ length=30
 skipcheck=false
 fullvideo=false
 notlive=false
+cachesaving=true
 
-while getopts "p:o:l:sfnh" opt; do
+while getopts "p:o:l:sfnch" opt; do
     case $opt in
         p) inputfolder="$OPTARG" ;;
         o) online="$OPTARG" ;;
@@ -14,14 +15,16 @@ while getopts "p:o:l:sfnh" opt; do
         s) skipcheck=true ;;
         f) fullvideo=true ;;
         n) notlive=true ;;
+        c) cachesaving=false ;;
         h)
-            echo "Usage: $0 -p <path/to/assets/tv> -o <https:example.com/video.mp4> -l ## -f -s -n"
+            echo "Usage: $0 -p <path/to/assets/tv> -o <https:example.com/video.mp4> -l ## -f -s -n -c"
             echo "  -p, the path to the assets/tv folder"
             echo "  -o, the online link you want to stream from"
             echo "  -l, how long the snippets the script cuts videos into are"
             echo "  -s, skips the 'press any key to continue' screen"
             echo "  -f, downloads the video fully instead of in snippets"
             echo "  -n, use timed snippets instead of treating the video as live"
+            echo "  -c, stops caching the online and loading videos and downloads them manaully each time you run the script"
             exit 0
             ;;
         *)
@@ -139,16 +142,22 @@ else
   esac
 fi
 
-echo "$inputfolder $online $length"
-
 # Take over the tv folder now that we've found it!
 
+# Folder making
 mkdir -p ${tv}/holder
 holder="${tv}/holder"
 
+mkdir -p ${tv}/cache
+cache="${tv}/cache"
+
 # Toss all the user's TV data into a closet, I'm sure it will be fine
 echo "Moving all data in /tv to holder folder..."
-find "$tv" -mindepth 1 -maxdepth 1 ! -name holder -exec mv -t "$holder" -- {} +
+find "$tv" -mindepth 1 -maxdepth 1 \
+  ! -name holder \
+  ! -name cache \
+  -exec mv -t "$holder" -- {} +
+
 echo "Moved data!"
 
 mkdir -p ${tv}/working
@@ -159,12 +168,31 @@ echo "Online Video Stream" > "$tv"/online.txt
 echo "file://${working}/video.mp4" >> "$tv"/online.txt
 echo "Created new online.txt"
 
-# Add temp holder video.mp4 to display
-ffmpeg -loglevel error -nostats -i $(yt-dlp -f 18 --quiet --no-warnings --get-url "https://youtu.be/Oac2pWMwCcA") \
-      -c copy \
-      "$working"/temp.mp4
+# Let's download and cache the loading videos...
+if $cachesaving; then
+  if [ ! -f "$cache"/online.mp4 ]; then
+      echo "Caching video 1..."
+      ffmpeg -loglevel error -nostats -i $(yt-dlp -f 18 --quiet --no-warnings --get-url "https://youtu.be/Oac2pWMwCcA") \
+        -c copy \
+        "$cache"/online.mp4
 
-mv "$working"/temp.mp4 "$working"/video.mp4
+  fi
+  if [ ! -f "$cache"/loading.mp4 ]; then
+      echo "Caching video 2..."
+      ffmpeg -loglevel error -nostats -i $(yt-dlp -f 18 --quiet --no-warnings --get-url "https://www.youtube.com/watch?v=JUSVCW1nYO8") \
+        -c copy \
+        "$cache"/loading.mp4
+  fi
+
+  cp "$cache"/online.mp4 "$working"
+  mv "$working"/online.mp4 "$working"/video.mp4
+else
+  ffmpeg -loglevel error -nostats -i $(yt-dlp -f 18 --quiet --no-warnings --get-url "https://youtu.be/Oac2pWMwCcA") \
+        -c copy \
+        "$working"/temp.mp4
+
+  mv "$working"/temp.mp4 "$working"/video.mp4
+fi
 
 if ! $skipcheck; then
   # Tell the user to actually
@@ -211,6 +239,14 @@ check_url() {
 }
 
 mediamode=0
+
+# Moved this up here so it can be caled by the link checking
+quit_script() {
+  rm "${tv}/online.txt"
+  rm -r "${working}"
+  find "$holder" -mindepth 1 -maxdepth 1 -exec mv -t "$tv" -- {} +
+  rmdir "$holder"
+}
 
 if [ -z "$online" ]; then
   echo ""
@@ -260,7 +296,7 @@ else
     0)
       echo "This doesn't seem like a proper link, please try again."
       # Made it quit properly just in case
-      quit_script()
+      quit_script
       ;;
     1)
       mediamode=1
@@ -296,21 +332,22 @@ fi
 
 echo "Processing complete"
 
-# Remember to make this download from a online source later
-cp /home/slepdepriv/Videos/loading.mp4 ${working}
-mv "$working"/loading.mp4 "$working"/video.mp4
+# Set to loading screen
 
-ffmpeg -loglevel error -nostats -i $(yt-dlp -f 18 --quiet --no-warnings --get-url "https://www.youtube.com/watch?v=JUSVCW1nYO8") \
-      -c copy \
-      "$working"/temp.mp4
-
-mv "$working"/temp.mp4 "$working"/video.mp4
+if $cachesaving; then
+  cp "$cache"/loading.mp4 "$working"
+  mv "$working"/loading.mp4 "$working"/video.mp4
+else
+  ffmpeg -loglevel error -nostats -i $(yt-dlp -f 18 --quiet --no-warnings --get-url "https://www.youtube.com/watch?v=JUSVCW1nYO8") \
+        -c copy \
+        "$cache"/temp.mp4
+  mv "$working"/temp.mp4 "$working"/video.mp4
+fi
 
 echo ""
 echo "----------------------------------------------------------------------------"
 echo "Everything is now up and running, your stream should begin shortly!"
 echo "Press [q] to stop the script and set everything back to normal"
-echo "Press [p] to pause the script"
 echo "(You may need to press the keys multiple times or wait abit for them to work)"
 echo "----------------------------------------------------------------------------"
 echo ""
@@ -319,15 +356,7 @@ lengthstart=0
 lengthend=$length
 duration=-1
 active=true
-running=true
 queuedvideo=0
-
-quit_script() {
-  rm "${tv}/online.txt"
-  rm -r "${working}"
-  find "$holder" -mindepth 1 -maxdepth 1 -exec mv -t "$tv" -- {} +
-  rmdir "$holder"
-}
 
 default_stream() {
 
@@ -456,6 +485,7 @@ playlist_stream() {
 while $active; do
   read -t 0.1 -n 1 key
   case $key in
+    # I used to have more options, now I don't! Suffer.
     "q")
       echo "Quiting..."
       quit_script
@@ -463,25 +493,18 @@ while $active; do
       active=false
       break
       ;;
-    "p")
-      running=false
-      echo "Paused..."
-      echo "Press [p] again to resume!"
-      ;;
   esac
 
-  if $running; then
-    case $mediamode in
-      1)
-        default_stream
-        ;;
-      2)
-        youtube_stream
-        ;;
-      3)
-        playlist_stream
-        ;;
-    esac
-  fi
+  case $mediamode in
+    1)
+      default_stream
+      ;;
+    2)
+      youtube_stream
+      ;;
+    3)
+      playlist_stream
+      ;;
+  esac
 
 done
