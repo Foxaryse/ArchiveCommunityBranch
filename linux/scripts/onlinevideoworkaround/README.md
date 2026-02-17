@@ -22,7 +22,7 @@ First make sure you have ffmpeg and yt-dlp installed from your local package man
 ```rpm-ostree install yt-dlp```
 
 
-With the two required packages installed, now download the `onlinevideoworkaround.sh` file from this repo, and install it somewhere you'll remember.
+With the two required packages installed, now download the `onlinevideoworkaround.sh` file from this repo, you can do so by clicking on the script and finding the "download raw file" button that looks like a arrow pointing into a open box. Download it somewhere you'll remember or can easily find, such as a folder in your home directory or desktop.
 
 Then open a terminal in it's install location and run:
 ```chomod u+x onlinevideoworkaround.sh```
@@ -77,3 +77,8 @@ Downloads the full video instead of chopping it up into snippets, better used wi
 Experimental arg to treat normal online video links like a youtube link for cases where it's not live, not tested, example usage:
 
 ```./onlinevideoworkaround.sh -n```
+
+# Known Issues
+
+## Looping clip while set to sequence
+Voices of The Void sometimes lies to you about the looping status, sometimes it will say "sequence" but actually be set to "looping". It's annoying but simply click the button until it lands on sequence again to fix the issue.
