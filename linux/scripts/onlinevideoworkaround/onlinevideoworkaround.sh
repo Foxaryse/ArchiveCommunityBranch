@@ -190,7 +190,8 @@ check_url() {
 
   if [[ $link =~ ^https?://[a-zA-Z0-9.-]+(:[0-9]+)?(/.*)?$  ]]; then
     if [[ "$link" =~ (youtube\.com|youtu\.be) ]]; then
-      type=$(yt-dlp --dump-single-json --skip-download --quiet --no-warnings "$online" \
+      # was using the global $online variable rather then $link argument, so it couldnt check the url
+      type=$(yt-dlp --dump-single-json --skip-download --quiet --no-warnings "$link" \
       | jq -r '._type')
 
       if [[ "$type" == "playlist" ]]; then
@@ -251,22 +252,26 @@ if [ -z "$online" ]; then
 else
   echo "Checking url..."
   check_url "$online"
-    result=$?
+  # Untabbed this cause it was ticking me off, sorry lmfao
 
-    case $result in
-      0)
-        echo "This doesn't seem like a proper link, please try again."
-        ;;
-      1)
-        mediamode=1
-        ;;
-      2)
-        mediamode=2
-        ;;
-      3)
-        mediamode=3
-        ;;
-    esac
+  result=$?
+
+  case $result in
+    0)
+      echo "This doesn't seem like a proper link, please try again."
+      # Made it quit properly just in case
+      quit_script()
+      ;;
+    1)
+      mediamode=1
+      ;;
+    2)
+      mediamode=2
+      ;;
+    3)
+      mediamode=3
+      ;;
+  esac
 fi
 
 
