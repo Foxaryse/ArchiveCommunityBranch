@@ -38,11 +38,6 @@ if ! command -v ffmpeg >/dev/null 2>&1; then
     echo "Error: this script requires ffmpeg and it can't find it, do you have it installed?"
     exit 1
 fi
-# And yt-dlp!
-if ! command -v yt-dlp >/dev/null 2>&1; then
-    echo "Error: this script requires yt-dlp and it can't find it, do you have it installed?"
-    exit 1
-fi
 
 
 echo "Script started!"
@@ -172,14 +167,13 @@ echo "Created new online.txt"
 if $cachesaving; then
   if [ ! -f "$cache"/online.mp4 ]; then
       echo "Caching video 1..."
-      ffmpeg -loglevel error -nostats -i $(yt-dlp -f 18 --quiet --no-warnings --get-url "https://youtu.be/Oac2pWMwCcA") \
+      ffmpeg -loglevel error -nostats -i https://github.com/Foxaryse/ArchiveCommunityBranch/raw/refs/heads/main/linux/scripts/onlinevideoworkaround/videos/online.mp4 \
         -c copy \
         "$cache"/online.mp4
-
   fi
   if [ ! -f "$cache"/loading.mp4 ]; then
       echo "Caching video 2..."
-      ffmpeg -loglevel error -nostats -i $(yt-dlp -f 18 --quiet --no-warnings --get-url "https://www.youtube.com/watch?v=JUSVCW1nYO8") \
+      ffmpeg -loglevel error -nostats -i https://github.com/Foxaryse/ArchiveCommunityBranch/raw/refs/heads/main/linux/scripts/onlinevideoworkaround/videos/loading.mp4 \
         -c copy \
         "$cache"/loading.mp4
   fi
@@ -187,7 +181,7 @@ if $cachesaving; then
   cp "$cache"/online.mp4 "$working"
   mv "$working"/online.mp4 "$working"/video.mp4
 else
-  ffmpeg -loglevel error -nostats -i $(yt-dlp -f 18 --quiet --no-warnings --get-url "https://youtu.be/Oac2pWMwCcA") \
+  ffmpeg -loglevel error -nostats -i https://github.com/Foxaryse/ArchiveCommunityBranch/raw/refs/heads/main/linux/scripts/onlinevideoworkaround/videos/online.mp4 \
         -c copy \
         "$working"/temp.mp4
 
@@ -218,6 +212,12 @@ check_url() {
 
   if [[ $link =~ ^https?://[a-zA-Z0-9.-]+(:[0-9]+)?(/.*)?$  ]]; then
     if [[ "$link" =~ (youtube\.com|youtu\.be) ]]; then
+      # If it seems to be a youtube link, let's make sure it's installed
+      if ! command -v yt-dlp >/dev/null 2>&1; then
+          echo "Error: to use youtube links you need yt-dlp installed! Without it this script can't parse a youtube link"
+          exit 1
+      fi
+
       # was using the global $online variable rather then $link argument, so it couldnt check the url
       type=$(yt-dlp --dump-single-json --skip-download --quiet --no-warnings "$link" \
       | jq -r '._type')
@@ -255,7 +255,7 @@ if [ -z "$online" ]; then
   echo "An example would be the community broadcaster:"
   echo "https://tv.votvbroadcast.com/votv.mp4"
   echo "Or a youtube link (including playlists) such as:"
-  echo "https://www.youtube.com/watch?v=p8WU7zWqsWA"
+  echo "https://www.youtube.com/watch?v=H94mq_amEKg"
   echo "----------------------------------------------------------------------------"
   echo ""
 
@@ -277,7 +277,7 @@ if [ -z "$online" ]; then
         mediamode=2
         break
         ;;
-      2)
+      3)
         mediamode=3
         break
         ;;
@@ -315,10 +315,10 @@ is_valid_video() {
     yt-dlp --quiet --no-warnings --simulate "$1" >/dev/null 2>&1
 }
 
-echo "Processing playlist..."
-
 valid_playlist=()
 if (($mediamode == 3)); then
+  echo "Processing playlist..."
+
   mapfile -t playlist < <(
       yt-dlp --quiet --no-warnings --flat-playlist --print "%(url)s" "$online"
   )
@@ -328,9 +328,9 @@ if (($mediamode == 3)); then
         valid_playlist+=("$video")
     fi
   done
-fi
 
-echo "Processing complete"
+  echo "Processing complete"
+fi
 
 # Set to loading screen
 
@@ -338,9 +338,10 @@ if $cachesaving; then
   cp "$cache"/loading.mp4 "$working"
   mv "$working"/loading.mp4 "$working"/video.mp4
 else
-  ffmpeg -loglevel error -nostats -i $(yt-dlp -f 18 --quiet --no-warnings --get-url "https://www.youtube.com/watch?v=JUSVCW1nYO8") \
+  ffmpeg -loglevel error -nostats -i https://github.com/Foxaryse/ArchiveCommunityBranch/raw/refs/heads/main/linux/scripts/onlinevideoworkaround/videos/loading.mp4 \
         -c copy \
-        "$cache"/temp.mp4
+        "$working"/temp.mp4
+
   mv "$working"/temp.mp4 "$working"/video.mp4
 fi
 
