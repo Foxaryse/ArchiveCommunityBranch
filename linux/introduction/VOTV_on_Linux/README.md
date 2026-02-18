@@ -176,24 +176,22 @@ If you’re playing Voices of The Void through Steam you can simply add “games
 ### Using Gamescope with Lutris
 With Voices of The Void selected on Lutris you can click the little arrow next to play and hit Configure
 
-![](ressources/images/customresolution/gamescope/lutris1.png)
+![](ressources/images/customresolution/gamescope/lutris/1.png)
 
 Then in the opened window go to “System options”
 
-![](ressources/images/customresolution/gamescope/lutris2.png)
+![](ressources/images/customresolution/gamescope/lutris/2.png)
 
 Then hit the little slider to enable it.
 
-![](ressources/images/customresolution/gamescope/lutris3.png)
+![](ressources/images/customresolution/gamescope/lutris/3.png)
 
 Enter the resolution desired like so.
 
-![](ressources/images/customresolution/gamescope/lutris4.png)
+![](ressources/images/customresolution/gamescope/lutris/4.png)
 
 ### Using Gamescope with Wine
 Instead of directly using wine in a terminal you can launch it through gamescope by doing “gamescope  -W 1280 -H 800  -- wine path/to/Votv.exe”, replace the 1280 and 800 with the Width and Height desired.
-
-
 
 # Issues:
 ## TV not working
