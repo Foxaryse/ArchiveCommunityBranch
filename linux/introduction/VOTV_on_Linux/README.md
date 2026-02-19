@@ -1,5 +1,140 @@
-# Basics:
-## Installing and running via Lutris
+# Basic Infomation
+
+This guide is made to be a central location for all information related to running Voices of The Void on a linux system, including the methods to install it, the ways to run it properly, and how to fix some of the well known issues.
+
+Please note that Voices of The Void isn't made with Linux in mind, so while it's possible to run VotV on Linux and even do so well, there may always be issues that will crop up that's out of your control. Additionally, make sure to avoid reporting bugs to the Votv devs without assuring the issue is not a linux exclusive bug.
+
+## Overview
+
+This guide is split into acouple main sections, Basic Infomation, Installation, Launching, Configuring, and Issues.
+
+Each section should cover everything you'd need to know about Voices of The Void on Linux, feel free to skim through all the options to find what seems to be the best for you.
+
+Incase you're unsure or overwhelmed, you can simply follow the methods tagged with *(Recommended) in Installation and Launching without too much hassle.
+
+# Installation
+
+There's two main methods to install Voices of The Void on your system, you can use the official YeetPatch script to download it, or you can manually download it from the itch.io and extract it using 7zip.
+
+There's also a third secondary method by using Lutris, a dedicated game and program installer and launcher. However, by using Lutris to install it you will also need to launch it with Lutris, so for that reason using Lutris is located in the 'Running Voices of The Void’ section of this guide.
+
+## Yeetpatch *(Recommended)
+
+Yeetpatch is an offical launcher for updating and installing VotV, including an option for linux using a shell (.sh) script. You can download it here:
+https://votv.dev/patcher#
+Make sure to get the linux option from the "Get it here" button on the site.
+
+Download the file to a location you'll remember, such as your desktop or a folder in your Home directory. Once downloaded you can open a terminal in the same location (or ``cd`` there) and run the script like so:
+
+```
+./YeetPatch.sh
+```
+
+This should open a basic help screen in your terminal to help guide you on using the script, and importantly to tell you to configure the script itself for usage.
+
+![](ressources/images/installing/yeetpatch/1.png)
+
+To configure the script itself open the ``YeetPatch.sh`` file in a text editor like it was any other text file, and scroll down to the area marked ``- config -`` and find the ``- INSTALL`` section below that. It should look something like:
+
+```
+# --- INSTALL
+INSTALL_DIR=""                                                              # game install path (folder)
+CACHE_DIR=""                                                                # optional: data cache folder
+STORE_URL="https://votv.dev/patcher_assets/256-1024-4096-store"             # datastore url
+SAVEGAME_DIR=""                                                             # optional: path to saves to back up; leave empty to skip
+INSTALL_CATALOG_URL="https://votv.dev/patcher_assets/index_manifest.json"   # optional: override via --catalog; expects array of {name,hash,link}
+BACKUPS_DIR="$SCRIPT_DIR/backups"                                           # optional: save backups directory (if SAVEGAME_DIR is set)
+```
+
+The only required path you need to add is the INSTALL_DIR, as that's where the script will install VotV to. Any location can work, you can make a dedicated folder for Votv in your Home Directory, such as Home/Programs/VoicesOfTheVoid, if you're aimming to play Votv through steam you can also install it with the rest of your steam games, it just has to point somewhere.
+
+Here's an example of what it looks like setup:
+
+![](ressources/images/installing/yeetpatch/2.png)
+
+Save your changes and go back to the terminal you opened and run:
+```
+./YeetPatch.sh install
+```
+
+If configured correctly, this should bring up a list of VotV versions to install that you can move through using the up and down arrow keys, you can then use the Enter key to select the build you want. Keep in mind any builds labled [UNSTABLE] are shadow test versions, essentially WIP builds not quite stable yet but still public for testing purposes, if you're unsure select the newest option without the [UNSTABLE] label.
+
+![](ressources/images/installing/yeetpatch/3.png)
+
+Now simply type in 'y' and hit enter again to proceed with the installation.
+
+![](ressources/images/installing/yeetpatch/4.png)
+
+And after some waiting, VotV should be successfully installed to the location you chose!
+
+## Manually
+
+TODO: Write this bit, I'm too lazy rn.
+
+# Launching
+
+Now there's multiple ways to get VotV to run your system, all of them involve using what's known as a "Compatibility Layer" that translates the normal windows instructions to something linux can understand, allowing you to run it. There's two main Compatibility Layers: Wine, a generic Windows Program Layer which can launch Windows .exe files, or Proton, a modified version of Wine made by Valve for gaming that can be used on Steam.
+
+To use a Compatibility Layer there's three main ways, you can add VotV to steam as a non-steam game to use Proton, you can use Lutris to install and download VotV and use Wine (or Proton), or directly launch VotV with wine from the command line.
+
+Generally speaking you'll want to use the first method as Proton is generally considered superior over Wine in almost every way, as it has better support for DirectX11 and DirectX12 apis that VotV uses by default.
+
+## Using Steam & Proton *(Recommended)
+
+There's three guides on how add VotV as a non-steam game, to cover all the bases. The first method is a text guide on using an automated script to do most of the work for you, the second is a video guide on how to do it manually, and third is a step-by-step text guide.
+
+Feel free to follow whichever feels easist for you.
+
+### Automated Script *(Recommended)
+
+TODO: Add this
+
+### Video Guide
+
+TODO: Need... video...
+
+### Text Guide
+
+Assuming you've already installed VotV as directed earlier in this tutorial, please open steam and click “Games” on the top left of the Steam Window and hit “Add a Non-Steam Game to My Library…”
+
+![](ressources/images/running/steam/proton/1.png)
+
+This will open up a separate window, you’ll need to hit “Browse…” in the bottom left.
+
+![](ressources/images/running/steam/proton/2.png)
+
+This will open a file browser, you’ll now need to navigate to “?/a09d_0004/WindowsNoEditor/VotV.exe” with ‘?’ being where you’ve installed it. For me that would be “/home/slepdepriv/Programs/a09d_0004/WindowsNoEditor/VotV.exe”
+
+![](ressources/images/running/steam/proton/3.png)
+
+Once found click on it then hit “Open” (or “Select” or so forth, as it may differ based on the Distro you use). This will close the file browser and add “VotV.exe” to the bottom of the list shown in the “Add Non-Steam Game” window. Make sure it’s checkmarked shown in the image below, then hit “Add Selected Programs”
+
+![](ressources/images/running/steam/proton/4.png)
+
+This will add “Votv.exe” to your Steam Library like it was any other game.
+
+![](ressources/images/running/steam/proton/5.png)
+
+Now you’ll need to tell Steam to launch Votv.exe with Proton. Right click on Votv.exe in the list and go to “Properties…”
+
+![](ressources/images/running/steam/proton/6.png)
+
+Then click "Compatibility" in the opened window.
+
+![](ressources/images/running/steam/proton/7.png)
+
+Then click “Force the use of the specific Steam Play compatibility tool” and select the newest Proton version from the dropdown list below, at the time of writing that would be “Proton 10.0-4”
+
+![](ressources/images/running/steam/proton/8.png)
+
+And that’s the bare minimum required, there’s more you can do to fix additional issues as documented in the Issues part of this guide along with some additional optimization, but this is enough to just make the game run.
+
+And as a tip, you can rename “Votv.exe” in the “Shortcut” area of the properties menu, and add a custom icon from your computer by clicking the blank square next to the name, though you’ll need to restart steam for the icon to take effect. You can also add custom images in the “Customization” area to display in various places in steam when viewing the game.
+
+## Using Lutris
+
+For convenience there's both a Video and Text step-by-step guide on how to both Install and Run VotV using Lutris, follow whichever is more comfortable for you. 
+
 ### Video: 
 - Watch video: [**Youtube**](https://youtu.be/2kMQBnCn6eQ)
 - Download: [**Google Drive**](https://drive.google.com/file/d/11npOZPIhTXN4jOrNDKQOC_vKgtWjIHuG/view?usp=sharing) 
@@ -39,78 +174,6 @@ After that, just wait for the game to download, extract and install.
 
 ![](ressources/images/installing/lutris/9.png)
 
-## Installing via YeetPatcher
-Yeetpatcher is the official launcher for updating or installing VOTV downloadable here
-The linux flavor will give you a shell (.sh) script which you need to use the terminal to run.
-Open a new terminal from the folder where the YeetPatchscript is located and run the following:
-```
-./YeetPatch.sh
-```
-After doing that this screen should show up
-
-![](ressources/images/installing/yeetpatch/1.png)
-
-Before running this script it is important to configure it (such as setting the install directory and cache directory).
-
-![](ressources/images/installing/yeetpatch/2.png)
-
-After those are set you can run the script with the “install” argument.
-It will show you a list of versions to choose from, versions marked as [UNSTABLE] are public test builds.
-
-![](ressources/images/installing/yeetpatch/3.png)
-
-After selecting a version a recap will be shown to you
-Make sure everything is correct then enter “y” to proceed with the installation.
-
-![](ressources/images/installing/yeetpatch/4.png)
-
-After that follow either the Using Steam & Proton (recommended) or Using Wine to learn how to launch the game on Linux.
-
-![](ressources/images/installing/yeetpatch/5.png)
-
-## Running Voices of The Void on a Linux system.
-There are 3 main methods of running VotV on linux, Either use Wine and run the game with the -vulkan argument, using the Lutris launcher to both install and run VotV, or what’s generally considered the best method, Steam’s compatibility layer called “Proton”. However since Voices of The Void is not on steam currently, you’ll have to add it to your library manually.
-
-Why Proton you may ask ? Well it seems Proton has better support for Dx11 & Dx12 support, which is the default API that is used by VotV when you boot up the game.
-### Using Steam & Proton
-Make sure you’ve already downloaded and extracted a copy of Voices of the Void using 7zip, or used the dedicated installer YeetPatcher.
-
-Now open Steam and click “Games” on the top left of the Steam App and hit “Add a Non-Steam Game to My Library…”
-
-![](ressources/images/running/steam/proton/1.png)
-
-This will open up a separate window, you’ll need to hit “Browse…” in the bottom left.
-
-![](ressources/images/running/steam/proton/2.png)
-
-This will open a file browser, you’ll now need to navigate to “?/a09d_0004/WindowsNoEditor/VotV.exe” with ‘?’ being where you’ve installed it. For me that would be “/home/slepdepriv/Programs/a09d_0004/WindowsNoEditor/VotV.exe”
-
-![](ressources/images/running/steam/proton/3.png)
-
-Once found click on it then hit “Open” (or “Select” or so forth, as it may differ based on the Distro you use). This will close the file browser and add “VotV.exe” to the bottom of the list shown in the “Add Non-Steam Game” window. Make sure it’s checkmarked shown in the image below, then hit “Add Selected Programs”
-
-![](ressources/images/running/steam/proton/4.png)
-
-This will add “Votv.exe” to your Steam Library like it was any other game.
-
-![](ressources/images/running/steam/proton/5.png)
-
-Now you’ll need to tell Steam to launch Votv.exe with Proton. Right click on Votv.exe in the list and go to “Properties…”
-
-![](ressources/images/running/steam/proton/6.png)
-
-Then click "Compatibility" in the opened window.
-
-![](ressources/images/running/steam/proton/7.png)
-
-Then click “Force the use of the specific Steam Play compatibility tool” and select the newest Proton version from the dropdown list below, at the time of writing that would be “Proton 10.0-4”
-
-![](ressources/images/running/steam/proton/8.png)
-
-And that’s the bare minimum required, there’s more you can do to fix additional issues as documented in the Issues part of this page along with some additional optimization, but this is enough to just make the game run.
-
-And as a tip, you can rename “Votv.exe” in the “Shortcut” area of the properties menu, and add a custom icon from your computer by clicking the blank square next to the name, though you’ll need to restart steam for the icon to take effect. You can also add custom images in the “Customization” area to display in various places in steam when viewing the game.
-
 ### Using Wine
 Perhaps the most direct way of playing VotV on Linux but lacks the robustness something like Steam & Proton or even Lutris can provide, however it’s a completely viable option.
 
@@ -119,6 +182,10 @@ Assuming you already have wine installed on your device, if you don’t I’d re
 ![](ressources/images/running/wine/1.png)
 
 It’s worth noting that you can run Votv without the -vulkan option, at the cost of reduced performance.
+
+# Configuration
+
+
 
 ## Using Custom Assets
 Voices of The Void features the ability to add custom assets (Custom Paintings, Posters, Radio Songs, TV Videos, etc) to be used in-game by placing them in a dedicated “Assets” folder. By default Votv expects this folder to be in a windows installation’s appdata/local/votv location, which Linux doesn’t have.
@@ -193,7 +260,7 @@ Enter the resolution desired like so.
 ### Using Gamescope with Wine
 Instead of directly using wine in a terminal you can launch it through gamescope by doing “gamescope  -W 1280 -H 800  -- wine path/to/Votv.exe”, replace the 1280 and 800 with the Width and Height desired.
 
-# Issues:
+# Issues
 ## TV not working
 One of the most common issues when playing Voices of The Void on a Linux system is the TV not working, the exact way this issue appears can vary heavily based on factors like Distro.
 
