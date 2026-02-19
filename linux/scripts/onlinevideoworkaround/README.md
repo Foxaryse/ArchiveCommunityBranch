@@ -19,7 +19,7 @@ First make sure you have ffmpeg and yt-dlp installed from your local package man
 With the two required packages installed, now download the `onlinevideoworkaround.sh` file from this repo, you can do so by clicking on the script and finding the "download raw file" button that looks like a arrow pointing into a open box. Download it somewhere you'll remember or can easily find, such as a folder in your home directory or desktop.
 
 Then open a terminal in it's install location and run:
-```chomod u+x onlinevideoworkaround.sh```
+```chmod u+x onlinevideoworkaround.sh```
 You should now be able to run the script like so:
 ```./onlinevideoworkaround.sh```
 
