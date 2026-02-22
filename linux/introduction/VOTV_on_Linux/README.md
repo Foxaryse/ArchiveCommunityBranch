@@ -186,7 +186,7 @@ For convenience there's both a Video and Text step-by-step guide on how to both 
 
 ### Video: 
 - Watch video: [**Youtube**](https://youtu.be/2kMQBnCn6eQ)
-- Download: [**Google Drive**](https://drive.google.com/file/d/11npOZPIhTXN4jOrNDKQOC_vKgtWjIHuG/view?usp=sharing) 
+- Download video: [**Google Drive**](https://drive.google.com/file/d/11npOZPIhTXN4jOrNDKQOC_vKgtWjIHuG/view?usp=sharing) 
 
 ### Step by step:
 - Open Lutris and press on the + button on the top left
