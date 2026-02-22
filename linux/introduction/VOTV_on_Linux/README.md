@@ -69,7 +69,56 @@ And after some waiting, VotV should be successfully installed to the location yo
 
 ## Manually
 
-TODO: Write this bit, I'm too lazy rn.
+Downloading it manually is a fair choice and can be done fairly easily, first go to the offical itch.io:
+https://mrdrnose.itch.io/votv
+
+And you can either download the latest stable release by clicking the Download Now button:
+
+![](ressources/images/installing/manual/1.png)
+
+Then hit "No thanks, just take me to the downloads"
+
+![](ressources/images/installing/manual/2.png)
+
+Now you can just hit the big red Download button to claim your prize.
+
+![](ressources/images/installing/manual/3.png)
+
+You can also on the itch.io page scroll down to the [Shadow Test Access] community post to look into downloading a WIP unstable testing version of VotV, if there is one currently released. However this guide will focus on using a stable build, though you can follow it's steps for a unstable build.
+
+![](ressources/images/installing/manual/4.png)
+
+Now regardless of the build downloaded, you should now have a .7z file type with the name of the build- for example "082c_0011.7z" is the one I'll be using for example
+
+![](ressources/images/installing/manual/5.png)
+
+Now make sure you have 7zip installed, if not you can get it from your basic package repo:
+
+### Ubuntu/Debian
+```
+sudo apt-get install 7zip
+```
+### Arch
+```
+sudo pacman -S 7zip
+```
+### Fedora
+```
+dnf install 7zi[]
+```
+
+Or any other package repo you may use on your distro, 7zip is quite the common package so it should be there.
+
+Once you have it downloaded, open a terminal in the location you have the .7z file and run:
+``7z x FILENAME -oPATH/TO/EXTACT`` With FILENAME being the name of the .7z file, and PATH/TO/EXTRACT being where you want VotV's files to be. For me I want to extract them to a folder called "programs" in my home location, so I'd run:
+
+![](ressources/images/installing/manual/6.png)
+
+Hit enter and after waiting awhile it should finish extracting Votv to the desired location, making a folder with a matching name to the .7z file. Inside will be a folder called "WindowsNoEditor" and inside there will be the VotV.exe, like so:
+
+![](ressources/images/installing/manual/7.png)
+
+And that's everything!
 
 # Launching
 
@@ -357,18 +406,18 @@ You can now close ProtonTricks and open Voices of The Void to check if the issue
 
 ## Streamed videos on the tv not working:
 
-### Description:
-This is an issue that is yet to have been resolved officially
+Unfortunately at time of writing there is no proper way to make streamed videos (videos played using the online.txt file) while on linux. However, there is an improper way to make it work.
 
-### Fix:
-A work around has been found via the use of a script to dynamically copy sections of the streamed media, convert them into a normal mp4 file with a specific duration  targeted via file:// and works by setting it to “sequence”.
+### Workaround
+To warn you, this solution is extremely cursed but should work for most people. This method involves using a script that downloads the online video outside of votv and cuts up it's output into votv's tv folder location and uses sequence looping to play it.
+
+You can find the script and how to use it here: https://github.com/Foxaryse/ArchiveCommunityBranch/tree/main/linux/scripts/onlinevideoworkaround
 
 ## 3D printable objects not showing up while other custom assets do:
 
-### Description:
-This issue happens when trying to load 3D printable objects, the 3D prints won’t show up while other custom assets such as TV videos, Radio audio, custom poster, etc.. will.
+Due to how wine/proton handles the linux file system using a custom assets folder location in a way wine/proton doesn't approve us can cause the weird issue of most custom assets working except 3D prints, simply not appearing in the 3d printer's menu no matter what you do.
 
-### Fix:
+### Solution
 User the “Open Assets Folder” button.
 
 ![](ressources/images/issues/3dprint/1.png)
@@ -389,10 +438,9 @@ Your 3D prints should now show up
 
 ## Black screen when loading into save:
 
-### Description:
-When loading into any save your screen will go black, you can still press buttons and hear yourself move around but you’ll see nothing. Pausing will allow you to see but only while you’re paused
+When loading into any save your screen will go black, you can still press buttons and hear yourself move around but you’ll see nothing. Pausing will allow you to see but only while you’re paused.
 
-### Fix:
+### Solution
 Turn off “Automatic screen res” in the Graphics>Display section of settings and restart the game
 
 ![](ressources/images/issues/blackscreen/1.png)
