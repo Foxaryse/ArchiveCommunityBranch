@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Yummy vars
 inputfolder=""
 online=""
